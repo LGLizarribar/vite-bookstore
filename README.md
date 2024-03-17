@@ -5,6 +5,7 @@
 This project works with an external API, Google Books. Therefore, before buiding the app please create a .env file with the following parameters:
 
 VITE_GOOGLE_BOOKS_BASE_URL=https://www.googleapis.com/books/v1/volumes
+
 VITE_GOOGLE_BOOKS_API_KEY=\*\*\*
 
 For the parameter VITE_GOOGLE_BOOKS_API_KEY you must create a valid Google Books Api Key in the following page : [https://console.cloud.google.com/apis/credentials](https://console.cloud.google.com/apis/credentials)

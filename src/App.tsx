@@ -1,5 +1,7 @@
+import { Books } from "./components/Books";
+
 function App() {
-  return <>Shopping cart app</>;
+  return <Books />;
 }
 
 export default App;

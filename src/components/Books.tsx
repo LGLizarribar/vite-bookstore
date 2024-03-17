@@ -1,15 +1,20 @@
 import { Book } from "../models";
 
+const truncate = (desc: string) => {
+  if (desc?.length > 50) {
+    return (desc = desc.substring(0, 49) + "...");
+  } else return desc;
+};
+
 export const Books = ({ books }: { books: Array<Book> }) => {
-  console.log(books);
-  const hasBooks = books.length > 0;
+  const hasBooks = books?.length > 0;
 
   return hasBooks ? (
     <ul className="books">
       {books.map((book) => (
         <li className="book" key={book.id}>
           <h3>{book.title}</h3>
-          <p>{book.description}</p>
+          <p>{truncate(book.description)}</p>
           <img src={book.image} alt={book.title} />
         </li>
       ))}

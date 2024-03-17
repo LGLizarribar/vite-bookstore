@@ -1,18 +1,23 @@
-import { useCallback, useState } from "react";
-import { getBooks } from "../services/books.service";
+import { useCallback, useRef, useState } from "react";
+import { getBooks } from "../services";
 
-export const useGetBooks = () => {
-  const [searchParams, setSearchParams] = useState<string>("*");
+export const useGetBooks = ({ search = "*" }: { search: string }) => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
+  const previousSearch = useRef(search);
 
-  const getBooksList = useCallback(async () => {
+  const getBooksList = useCallback(async ({ search }: { search: string }) => {
+    if (search === previousSearch.current) return;
     try {
-      getBooks(searchParams).then((res) => {
+      setLoading(true);
+      setError(null);
+      previousSearch.current = search;
+      getBooks(search).then((res) => {
         const mappedBooks =
           res &&
           res.map((item: any) => {
+            const { id } = item;
             const {
               title,
               description,
@@ -23,6 +28,7 @@ export const useGetBooks = () => {
             } = item.volumeInfo;
             const { listPrice } = item.saleInfo;
             return {
+              id,
               title,
               description,
               previewLink,
@@ -41,5 +47,5 @@ export const useGetBooks = () => {
     }
   }, []);
 
-  return { books, getBooksList, loading, error, setSearchParams };
+  return { books, getBooksList, loading, error };
 };

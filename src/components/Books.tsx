@@ -1,13 +1,20 @@
-import { useEffect } from "react";
-import { useGetBooks } from "../hooks/useGetBooks";
+import { Book } from "../models";
 
-export const Books = () => {
-  const { books, getBooksList } = useGetBooks();
+export const Books = ({ books }: { books: Array<Book> }) => {
   console.log(books);
+  const hasBooks = books.length > 0;
 
-  useEffect(() => {
-    getBooksList();
-  }, []);
-
-  return <>Books</>;
+  return hasBooks ? (
+    <ul className="books">
+      {books.map((book) => (
+        <li className="book" key={book.id}>
+          <h3>{book.title}</h3>
+          <p>{book.description}</p>
+          <img src={book.image} alt={book.title} />
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p>No books found by this search.</p>
+  );
 };

@@ -39,8 +39,19 @@ type Items = {
   volumeInfo: VolumeInfo;
 };
 
-type BooksResponse = {
+export type BooksResponse = {
   items: Array<Items>;
   kind: string;
   totalItems: number;
+};
+
+export type Book = {
+  id: string;
+  title: string;
+  description: string;
+  previewLink: string;
+  authors: Array<string>;
+  infoLink: string;
+  listPrice: { amount: number; curencyCode: string };
+  image: string;
 };

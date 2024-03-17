@@ -1,8 +1,9 @@
 import { ChangeEvent, useCallback, useState } from "react";
-import { Books, PriceFilter } from "./components";
+import { Books, Cart, PriceFilter } from "./components";
 import debounce from "just-debounce-it";
 import { useGetBooks, useSearch } from "./hooks";
 import "./App.css";
+import { CartProvider } from "./context/cart";
 
 const App = () => {
   const { search, updateSearch, error } = useSearch();
@@ -31,33 +32,36 @@ const App = () => {
   };
 
   return (
-    <div className="page">
-      <header>
-        <h1>Book store</h1>
-        <form className="form" onSubmit={handleSubmit}>
-          <input
-            style={{
-              border: "1px solid transparent",
-              borderColor: error ? "red" : "transparent",
-            }}
-            onChange={handleChange}
-            value={search}
-            name="search"
-            placeholder="Search for your book"
-          />
-          <button type="submit">Find</button>
-        </form>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <PriceFilter price={priceFilter} setPrice={setPriceFilter} />
-      </header>
-      <main>
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          filteredBooks && <Books books={filteredBooks} />
-        )}
-      </main>
-    </div>
+    <CartProvider>
+      <div className="page">
+        <header>
+          <h1>Book store</h1>
+          <form className="form" onSubmit={handleSubmit}>
+            <input
+              style={{
+                border: "1px solid transparent",
+                borderColor: error ? "red" : "transparent",
+              }}
+              onChange={handleChange}
+              value={search}
+              name="search"
+              placeholder="Search for your book"
+            />
+            <button type="submit">Find</button>
+          </form>
+          {error && <p style={{ color: "red" }}>{error}</p>}
+          <PriceFilter price={priceFilter} setPrice={setPriceFilter} />
+        </header>
+        <main>
+          <Cart />
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            filteredBooks && <Books books={filteredBooks} />
+          )}
+        </main>
+      </div>
+    </CartProvider>
   );
 };
 

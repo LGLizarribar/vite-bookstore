@@ -409,7 +409,6 @@ select {
   display: block;
 }
 
-[type="checkbox"],
 [type="radio"] {
   display: initial;
 }

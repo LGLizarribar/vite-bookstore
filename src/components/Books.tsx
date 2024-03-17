@@ -16,6 +16,11 @@ export const Books = ({ books }: { books: Array<Book> }) => {
           <h3>{book.title}</h3>
           <p>{truncate(book.description)}</p>
           <img src={book.image} alt={book.title} />
+          {book?.listPrice?.amount ? (
+            <p>Price: $ {book?.listPrice?.amount}</p>
+          ) : (
+            <p>No price available</p>
+          )}
         </li>
       ))}
     </ul>

@@ -1,8 +1,15 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { getBooks } from "../services";
+import { Book } from "../models";
 
-export const useGetBooks = ({ search = "*" }: { search: string }) => {
-  const [books, setBooks] = useState([]);
+export const useGetBooks = ({
+  search = "*",
+  minPrice = 0,
+}: {
+  search: string;
+  minPrice: number;
+}) => {
+  const [books, setBooks] = useState<Array<Book>>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const previousSearch = useRef(search);
@@ -47,5 +54,12 @@ export const useGetBooks = ({ search = "*" }: { search: string }) => {
     }
   }, []);
 
-  return { books, getBooksList, loading, error };
+  const filteredBooks = useMemo(() => {
+    if (!books) return;
+    return minPrice
+      ? books.filter((book) => book?.listPrice?.amount >= minPrice)
+      : books;
+  }, [books, minPrice]);
+
+  return { filteredBooks, getBooksList, loading, error };
 };

@@ -1,12 +1,16 @@
-import { ChangeEvent, useCallback } from "react";
-import { Books } from "./components";
+import { ChangeEvent, useCallback, useState } from "react";
+import { Books, PriceFilter } from "./components";
 import debounce from "just-debounce-it";
 import { useGetBooks, useSearch } from "./hooks";
 import "./App.css";
 
 const App = () => {
   const { search, updateSearch, error } = useSearch();
-  const { books, loading, getBooksList } = useGetBooks({ search });
+  const [priceFilter, setPriceFilter] = useState<number>(0);
+  const { filteredBooks, loading, getBooksList } = useGetBooks({
+    search,
+    minPrice: priceFilter,
+  });
 
   const debouncedGetMovies = useCallback(
     debounce((search: string) => {
@@ -44,8 +48,15 @@ const App = () => {
           <button type="submit">Find</button>
         </form>
         {error && <p style={{ color: "red" }}>{error}</p>}
+        <PriceFilter price={priceFilter} setPrice={setPriceFilter} />
       </header>
-      <main>{loading ? <p>Loading...</p> : <Books books={books} />}</main>
+      <main>
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          filteredBooks && <Books books={filteredBooks} />
+        )}
+      </main>
     </div>
   );
 };

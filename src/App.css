@@ -44,3 +44,12 @@ form {
   border-radius: 8px;
   margin-top: 16px;
 }
+
+.filter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1000px;
+}
